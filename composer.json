@@ -1,0 +1,21 @@
+{
+    "name": "jcook/react-amqp",
+    "description": "AMQP bindings for ReactPHP",
+    "keywords": ["amqp", "rabbitmq"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jeremy Cook",
+            "email": "jeremycook0@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-amqp": "*",
+        "evenement/evenement": "1.0.*",
+        "react/event-loop": "0.2.*"
+    },
+    "autoload": {
+        "psr-0": { "JCook\\AMQP": "src" }
+    }
+}
