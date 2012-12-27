@@ -2,8 +2,8 @@
 
 namespace JCook\AMQP;
 
-use AMQPQExchange;
-use AMQPQExchangeException;
+use AMQPExchange;
+use AMQPExchangeException;
 use React\EventLoop\LoopInterface;
 use Evenement\EventEmitter;
 
