@@ -53,8 +53,8 @@ class Producer extends EventEmitter
     }
 
     /**
-     * Method to publish a message to an AMQP exchange. Wraps the exchanges
-     * publish method and emits events depending on the outcome.
+     * Method to publish a message to an AMQP exchange. Has the same method
+     * signature as the exchange objects publish method.
      * @param string $message    Message
      * @param string $routingKey Routing key
      * @param int    $flags      Flags

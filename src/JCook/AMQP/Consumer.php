@@ -34,15 +34,24 @@ class Consumer extends EventEmitter
     protected $closed = false;
 
     /**
+     * Max number of messages to consume in a 'batch'. Should stop the event
+     * loop stopping on this class for protracted lengths of time.
+     * @var int
+     */
+    protected $max;
+
+    /**
      * Constructor. Stores the message queue and the event loop for use.
      * @param AMQPQueue                     $queue    Message queue
      * @param React\EventLoop\LoopInterface $loop     Event loop
      * @param float                         $interval Interval to check for new messages
+     * @param int                           $max      Max number of messages to consume in one go
      */
-    public function __construct(AMQPQueue $queue, LoopInterface $loop, $interval)
+    public function __construct(AMQPQueue $queue, LoopInterface $loop, $interval, $max = null)
     {
         $this->queue = $queue;
         $this->loop  = $loop;
+        $this->max   = $max;
         $this->loop->addPeriodicTimer($interval, $this);
     }
 
@@ -52,8 +61,12 @@ class Consumer extends EventEmitter
      */
     public function __invoke()
     {
+        $counter = 0;
         while ($envelope = $this->queue->get()) {
             $this->emit('AMQPRead', [$envelope, $this->queue]);
+            if ($this->max && ++$counter >= $this->max) {
+                return;
+            }
         }
     }
 
