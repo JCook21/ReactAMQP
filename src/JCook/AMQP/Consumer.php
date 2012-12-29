@@ -63,7 +63,7 @@ class Consumer extends EventEmitter
     {
         $counter = 0;
         while ($envelope = $this->queue->get()) {
-            $this->emit('AMQPRead', [$envelope, $this->queue]);
+            $this->emit('consume', [$envelope, $this->queue]);
             if ($this->max && ++$counter >= $this->max) {
                 return;
             }

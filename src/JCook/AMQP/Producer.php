@@ -45,7 +45,7 @@ class Producer extends EventEmitter
      * @param React\EventLoop\LoopInterface $loop     Event loop
      * @param float                         $interval Interval to run loop to send messages
      */
-    public function __construct(AMQPExchange $exchange, LoopInterface $loop, $interval, $interval)
+    public function __construct(AMQPExchange $exchange, LoopInterface $loop, $interval)
     {
         $this->exchange = $exchange;
         $this->loop     = $loop;
@@ -79,9 +79,9 @@ class Producer extends EventEmitter
             try {
                 $this->exchange->publish($message['message'], $message['routingKey'], $message['flags'], $message['attributes']);
                 unset($this->messages[$key]);
-                $this->emit('AMQPWrite', $message);
+                $this->emit('produce', $message);
             } catch (AMQPExchangeException $e) {
-                $this->emit('AMQPWriteError', [$e]);
+                $this->emit('error', [$e]);
             }
         }
     }
@@ -111,7 +111,7 @@ class Producer extends EventEmitter
         $this->emit('end', [$this]);
         $this->loop->cancelTimer(spl_object_hash($this));
         $this->removeAllListeners();
-        unset($this->queue);
+        unset($this->exchange);
         $this->closed = true;
     }
 }
