@@ -4,6 +4,7 @@ namespace JCook\AMQP\Tests;
 
 use PHPUnit_Framework_TestCase;
 use JCook\AMQP\Producer;
+use AMQPExchangeException;
 
 /**
  * Test case for the producer class
@@ -107,10 +108,35 @@ class ProducerTest extends PHPUnit_Framework_TestCase
         foreach ($messages as $message) {
             call_user_func_array(array($producer, 'publish'), $message);
         }
-        $this->exchange->expects($this->atLeastOnce())
+        $this->exchange->expects($this->exactly(count($messages)))
             ->method('publish');
+        $this->assertAttributeCount(count($messages), 'messages', $producer);
         $producer();
         $this->assertSame(count($messages), $this->counter);
+        $this->assertAttributeCount(0, 'messages', $producer);
+    }
+
+    /**
+     * Tests the behaviour of the producer when an exception is raised by the
+     * exchange.
+     * @param array $messages
+     *
+     * @depends testPublish
+     * @dataProvider MessagesProvider
+     */
+    public function testSendingMessagesWithError(array $messages)
+    {
+        $producer = new Producer($this->exchange, $this->loop, 1);
+        $producer->on('error', $this);
+        foreach ($messages as $message) {
+            call_user_func_array(array($producer, 'publish'), $message);
+        }
+        $this->exchange->expects($this->exactly(count($messages)))
+            ->method('publish')
+            ->will($this->throwException(new AMQPExchangeException));
+        $producer();
+        $this->assertSame(count($messages), $this->counter);
+        $this->assertAttributeCount(count($messages), 'messages', $producer);
     }
 
     /**
