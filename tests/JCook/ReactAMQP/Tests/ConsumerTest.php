@@ -1,9 +1,9 @@
 <?php
 
-namespace JCook\AMQP\Tests;
+namespace JCook\ReactAMQP\Tests;
 
 use PHPUnit_Framework_TestCase;
-use JCook\AMQP\Consumer;
+use JCook\ReactAMQP\Consumer;
 
 /**
  * Test case for the consumer class
@@ -71,7 +71,7 @@ class ConsumerTest extends PHPUnit_Framework_TestCase
     {
         $this->loop->expects($this->once())
             ->method('addPeriodicTimer')
-            ->with($this->identicalTo($interval), $this->isInstanceOf('JCook\AMQP\Consumer'));
+            ->with($this->identicalTo($interval), $this->isInstanceOf('JCook\ReactAMQP\Consumer'));
         $consumer = new Consumer($this->queue, $this->loop, $interval, $max);
         $this->assertAttributeSame($this->queue, 'queue', $consumer);
         $this->assertAttributeSame($this->loop, 'loop', $consumer);

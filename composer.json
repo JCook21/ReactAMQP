@@ -16,6 +16,6 @@
         "react/event-loop": "0.2.*"
     },
     "autoload": {
-        "psr-0": { "JCook\\AMQP": "src" }
+        "psr-0": { "JCook\\ReactAMQP": "src" }
     }
 }

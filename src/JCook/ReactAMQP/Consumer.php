@@ -1,6 +1,6 @@
 <?php
 
-namespace JCook\AMQP;
+namespace JCook\ReactAMQP;
 
 use AMQPQueue;
 use React\EventLoop\LoopInterface;

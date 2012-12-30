@@ -13,7 +13,7 @@
 >
     <testsuites>
         <testsuite name="JCook\AMQP Test Suite">
-            <directory>./tests/JCook/AMQP/</directory>
+            <directory>./tests/JCook/ReactAMQP/</directory>
         </testsuite>
     </testsuites>
 

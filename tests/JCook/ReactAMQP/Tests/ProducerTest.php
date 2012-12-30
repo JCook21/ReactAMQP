@@ -1,9 +1,9 @@
 <?php
 
-namespace JCook\AMQP\Tests;
+namespace JCook\ReactAMQP\Tests;
 
 use PHPUnit_Framework_TestCase;
-use JCook\AMQP\Producer;
+use JCook\ReactAMQP\Producer;
 use AMQPExchangeException;
 
 /**
@@ -71,7 +71,7 @@ class ProducerTest extends PHPUnit_Framework_TestCase
     {
         $this->loop->expects($this->once())
             ->method('addPeriodicTimer')
-            ->with($this->identicalTo($interval), $this->isInstanceOf('JCook\\AMQP\\Producer'));
+            ->with($this->identicalTo($interval), $this->isInstanceOf('JCook\\ReactAMQP\\Producer'));
         $producer = new Producer($this->exchange, $this->loop, $interval);
         $this->assertAttributeSame($this->loop, 'loop', $producer);
         $this->assertAttributeSame($this->exchange, 'exchange', $producer);
