@@ -19,7 +19,7 @@ This library provides two classes, an AMQP Consumer and Producer. Both classes w
 ### Consumer
 The consumer class allows you to receive messages from an AMQP broker and to dispatch a callback whenever one is received. You can also supply a number of messages to consume in one go, making sure that your event loop isn't perpetually stuck consuming messages from a broker. The callback you supply must accept an AMQPEnvelope as the first argument and an optional AMQPQueue as the second.
 
-'''php
+```php
 <?php
 // Connect to an AMQP broker
 $cnn = new AMQPConnection();
@@ -42,7 +42,7 @@ $consumer->on('consume', function(AMQPEnvelope $envelope, AMQPQueue $queue){
 	//Process the message here
 });
 $loop->run();
-'''
+```
 
 ### Producer
 The producer class allows you to send messages to an AMQP exchange. Messages are stored in the producer class and sent based on the timer interval passed to the constructor. The producer has a publish method that has exactly the same method signature as the AMQPExchange's publish method. When a message is successfully sent a 'produce' event is emitted that you can bind a callback to. This is passed an array containing all of the message parameters sent. If an AMQPExchangeException is thrown, meaning the message could not be sent, an 'error' event is emitted that you can bind a callback to. This will be passed the AMQPExchangeException object for you to handle.
