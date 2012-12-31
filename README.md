@@ -45,7 +45,7 @@ $loop->run();
 ```
 
 ### Producer
-The producer class allows you to send messages to an AMQP exchange. Messages are stored in the producer class and sent based on the timer interval passed to the constructor. The producer has a publish method that has exactly the same method signature as the AMQPExchange's publish method. When a message is successfully sent a 'produce' event is emitted that you can bind a callback to. This is passed an array containing all of the message parameters sent. If an AMQPExchangeException is thrown, meaning the message could not be sent, an 'error' event is emitted that you can bind a callback to. This will be passed the AMQPExchangeException object for you to handle.
+The producer class allows you to send messages to an AMQP exchange. The producer has a publish method that has exactly the same method signature as the AMQPExchange's publish method. Messages are stored in the producer class and sent based on the timer interval passed to the constructor. When the producer object is invoked to send any queued messages the AMQPExchange objects publish method is used. This method is blocking, which may be a performance concern for your application. When a message is successfully sent a 'produce' event is emitted that you can bind a callback to. This is passed an array containing all of the message parameters sent. If an AMQPExchangeException is thrown, meaning the message could not be sent, an 'error' event is emitted that you can bind a callback to. This will be passed the AMQPExchangeException object for you to handle.
 
 ```php
 <?php
