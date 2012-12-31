@@ -78,10 +78,10 @@ $producer->on('error', function(AMQPExchangeException $e) {
 
 $i = 0;
 
-$loop->addPeriodicTimer(1, function() use(&$i, $ex) {
+$loop->addPeriodicTimer(1, function() use(&$i, $producer) {
 	$i++;
 	echo "Sending $i\n";
-	$ex->publish($i, 'routing.key');
+	$producer->publish($i, 'routing.key');
 });
 
 $loop->run();
