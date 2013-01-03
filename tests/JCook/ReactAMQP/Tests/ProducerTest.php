@@ -173,6 +173,45 @@ class ProducerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Asserts that the producer can be successfully 'counted'
+     * @param array $messages
+     *
+     * @depends testPublish
+     * @dataProvider MessagesProvider
+     */
+    public function testCount(array $messages)
+    {
+        $producer = new Producer($this->exchange, $this->loop, 1);
+        $this->assertSame(0, count($producer));
+        foreach ($messages as $message) {
+            call_user_func_array(array($producer, 'publish'), $message);
+        }
+        $this->assertSame(count($messages), count($producer));
+    }
+
+    /**
+     * Tests the getIterator method of the IteratorAggregate interfaced of the
+     * IteratorAggregate interface.
+     * @param array $messages
+     *
+     * @depends testPublish
+     * @dataProvider MessagesProvider
+     */
+    public function testGetIterator(array $messages)
+    {
+        $producer = new Producer($this->exchange, $this->loop, 1);
+        $ret = $producer->getIterator();
+        $this->assertInternalType('array', $ret);
+        $this->assertEmpty($ret);
+        foreach ($messages as $message) {
+            call_user_func_array(array($producer, 'publish'), $message);
+        }
+        $ret = $producer->getIterator();
+        $this->assertInternalType('array', $ret);
+        $this->assertNotEmpty($ret);
+    }
+
+    /**
      * Data supplier with intervals for the constructor of the producer
      *
      * @return array

@@ -6,6 +6,8 @@ use AMQPExchange;
 use AMQPExchangeException;
 use React\EventLoop\LoopInterface;
 use Evenement\EventEmitter;
+use Countable;
+use IteratorAggregate;
 
 /**
  * Class to publish messages to an AMQP exchange
@@ -13,7 +15,7 @@ use Evenement\EventEmitter;
  * @package AMQP
  * @author  Jeremy Cook <jeremycook0@gmail.com>
  */
-class Producer extends EventEmitter
+class Producer extends EventEmitter implements Countable, IteratorAggregate
 {
     /**
      * AMQP message exchange to send messages to
@@ -50,6 +52,26 @@ class Producer extends EventEmitter
         $this->exchange = $exchange;
         $this->loop     = $loop;
         $this->loop->addPeriodicTimer($interval, $this);
+    }
+
+    /**
+     * Returns the number of messages waiting to be sent. Implements the
+     * countable interface.
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->messages);
+    }
+
+    /**
+     * Returns the array of messages stored. Completes the implementation of
+     * the iteratorAggregate interface.
+     * @return array
+     */
+    public function getIterator()
+    {
+        return $this->messages;
     }
 
     /**
