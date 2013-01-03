@@ -5,6 +5,7 @@ namespace JCook\ReactAMQP;
 use AMQPQueue;
 use React\EventLoop\LoopInterface;
 use Evenement\EventEmitter;
+use BadMethodCallException;
 
 /**
  * Class to listen to an AMQP queue and dispatch listeners when messages are
@@ -58,9 +59,14 @@ class Consumer extends EventEmitter
     /**
      * Method to handle receiving an incoming message
      * @return void
+     *
+     * @throws BadMethodCallException
      */
     public function __invoke()
     {
+        if ($this->closed) {
+            throw new BadMethodCallException('This consumer object is closed and cannot receive any more messages.');
+        }
         $counter = 0;
         while ($envelope = $this->queue->get()) {
             $this->emit('consume', [$envelope, $this->queue]);

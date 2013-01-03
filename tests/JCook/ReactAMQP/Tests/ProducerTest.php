@@ -212,6 +212,34 @@ class ProducerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Asserts that an exception is thrown when attempting to publish a message
+     * to a closed producer
+     *
+     * @depends testClose
+     * @expectedException BadMethodCallException
+     */
+    public function testPublishAfterClosingProducer()
+    {
+        $producer = new Producer($this->exchange, $this->loop, 1);
+        $producer->close();
+        $producer->publish('foo', 'bar');
+    }
+
+    /**
+     * Asserts that an exception is thrown when invoking a producer after it
+     * has been closed.
+     *
+     * @depends testClose
+     * @expectedException BadMethodCallException
+     */
+    public function testInvokeAfterClosingProducer()
+    {
+        $producer = new Producer($this->exchange, $this->loop, 1);
+        $producer->close();
+        $producer();
+    }
+
+    /**
      * Data supplier with intervals for the constructor of the producer
      *
      * @return array

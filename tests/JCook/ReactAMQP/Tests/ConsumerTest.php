@@ -145,6 +145,20 @@ class ConsumerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Asserts that an exception is thrown when trying to invoke a consumer
+     * after closing it.
+     *
+     * @depends testClose
+     * @expectedException BadMethodCallException
+     */
+    public function testInvokingConsumerAfterClosing()
+    {
+        $consumer = new Consumer($this->queue, $this->loop, 1);
+        $consumer->close();
+        $consumer();
+    }
+
+    /**
      * Data provider with interval and max iteration values
      * @return array
      */

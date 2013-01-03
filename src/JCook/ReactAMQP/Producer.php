@@ -8,6 +8,7 @@ use React\EventLoop\LoopInterface;
 use Evenement\EventEmitter;
 use Countable;
 use IteratorAggregate;
+use BadMethodCallException;
 
 /**
  * Class to publish messages to an AMQP exchange
@@ -81,9 +82,14 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
      * @param string $routingKey Routing key
      * @param int    $flags      Flags
      * @param array  $attributes Attributes
+     *
+     * @throws BadMethodCallException
      */
     public function publish($message, $routingKey, $flags = null, $attributes = [])
     {
+        if ($this->closed) {
+            throw new BadMethodCallException('This Producer object is closed and cannot send any more messages.');
+        }
         $this->messages[] = [
             'message'    => $message,
             'routingKey' => $routingKey,
@@ -94,9 +100,14 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
 
     /**
      * Callback to dispatch on the loop timer.
+     *
+     * @throws BadMethodCallException
      */
     public function __invoke()
     {
+        if ($this->closed) {
+            throw new BadMethodCallException('This Producer object is closed and cannot send any more messages.');
+        }
         foreach ($this->messages as $key => $message) {
             try {
                 $this->exchange->publish($message['message'], $message['routingKey'], $message['flags'], $message['attributes']);

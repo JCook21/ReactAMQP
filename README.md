@@ -92,4 +92,3 @@ As the PECL AMQP extension does not provide any way to 'listen' to the underlyin
 
 ## TODO
 - Add support for the [php-amqplib](https://github.com/videlalvaro/php-amqplib).
-- Add checks to the consumer and producer classes to check if the object has been closed.
