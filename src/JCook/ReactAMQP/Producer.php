@@ -41,6 +41,12 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
      * @var array
      */
     protected $messages = array();
+    
+    /**
+     *
+     * @var \React\EventLoop\Timer\Timer
+     */
+    protected $timer;
 
     /**
      * Constructor. Stores the message queue and the event loop for use.
@@ -52,7 +58,7 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
     {
         $this->exchange = $exchange;
         $this->loop     = $loop;
-        $this->loop->addPeriodicTimer($interval, $this);
+        $this->timer = $this->loop->addPeriodicTimer($interval, $this);
     }
 
     /**
@@ -142,7 +148,7 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
         }
 
         $this->emit('end', [$this]);
-        $this->loop->cancelTimer(spl_object_hash($this));
+        $this->loop->cancelTimer($this->timer);
         $this->removeAllListeners();
         unset($this->exchange);
         $this->closed = true;

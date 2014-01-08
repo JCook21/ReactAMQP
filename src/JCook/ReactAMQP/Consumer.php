@@ -40,6 +40,12 @@ class Consumer extends EventEmitter
      * @var int
      */
     protected $max;
+    
+    /**
+     *
+     * @var React\EventLoop\Timer\TimerInterface
+     */
+    private $timer;
 
     /**
      * Constructor. Stores the message queue and the event loop for use.
@@ -53,7 +59,7 @@ class Consumer extends EventEmitter
         $this->queue = $queue;
         $this->loop  = $loop;
         $this->max   = $max;
-        $this->loop->addPeriodicTimer($interval, $this);
+        $this->timer = $this->loop->addPeriodicTimer($interval, $this);
     }
 
     /**
@@ -99,7 +105,7 @@ class Consumer extends EventEmitter
         }
 
         $this->emit('end', [$this]);
-        $this->loop->cancelTimer(spl_object_hash($this));
+        $this->loop->cancelTimer($this->timer);
         $this->removeAllListeners();
         unset($this->queue);
         $this->closed = true;

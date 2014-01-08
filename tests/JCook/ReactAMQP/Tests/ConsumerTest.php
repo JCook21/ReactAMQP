@@ -30,6 +30,12 @@ class ConsumerTest extends PHPUnit_Framework_TestCase
      * @var int
      */
     protected $counter = 0;
+    
+    /**
+     *
+     * @var \React\EventLoop\Timer\Timer
+     */
+    protected $timer;
 
     /**
      * Bootstrap the test case
@@ -41,6 +47,13 @@ class ConsumerTest extends PHPUnit_Framework_TestCase
             ->getMock();
         $this->loop = $this->getMockBuilder('React\\EventLoop\\LoopInterface')
             ->getMock();
+        
+        $this->timer = $this->getMockBuilder('React\\EventLoop\\Timer\\Timer')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->loop->expects($this->any())->method('addPeriodicTimer')
+            ->will($this->returnValue($this->timer));
     }
 
     /**
@@ -137,7 +150,7 @@ class ConsumerTest extends PHPUnit_Framework_TestCase
         $consumer->on('end', $this);
         $this->loop->expects($this->once())
             ->method('cancelTimer')
-            ->with($this->identicalTo(spl_object_hash($consumer)));
+            ->with($this->equalTo($this->timer));
         $consumer->close();
         $this->assertAttributeSame(true, 'closed', $consumer);
         $this->assertAttributeSame(null, 'queue', $consumer);
