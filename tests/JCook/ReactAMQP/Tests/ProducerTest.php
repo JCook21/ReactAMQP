@@ -42,6 +42,13 @@ class ProducerTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->loop = $this->getMock('React\\EventLoop\\LoopInterface');
+        
+        $this->timer = $this->getMockBuilder('React\\EventLoop\\Timer\\Timer')
+            ->disableOriginalConstructor()
+            ->getMock();
+        
+        $this->loop->expects($this->any())->method('addPeriodicTimer')
+            ->will($this->returnValue($this->timer));
     }
 
     /**
@@ -165,7 +172,7 @@ class ProducerTest extends PHPUnit_Framework_TestCase
         $producer->on('end', $this);
         $this->loop->expects($this->once())
             ->method('cancelTimer')
-            ->with(spl_object_hash($producer));
+            ->with($this->timer);
         $producer->close();
         $this->assertAttributeSame(true, 'closed', $producer);
         $this->assertAttributeSame(null, 'exchange', $producer);
