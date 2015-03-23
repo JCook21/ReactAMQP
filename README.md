@@ -1,3 +1,5 @@
+**This library is no longer maintained and should be considered deprecated.**
+
 # ReactAMQP
 
 Basic AMQP bindings for [React PHP](https://github.com/reactphp).
