@@ -91,17 +91,17 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
      *
      * @throws BadMethodCallException
      */
-    public function publish($message, $routingKey, $flags = null, $attributes = [])
+    public function publish($message, $routingKey, $flags = null, $attributes = array())
     {
         if ($this->closed) {
             throw new BadMethodCallException('This Producer object is closed and cannot send any more messages.');
         }
-        $this->messages[] = [
+        $this->messages[] = array(
             'message'    => $message,
             'routingKey' => $routingKey,
             'flags'      => $flags,
             'attributes' => $attributes
-        ];
+        );
     }
 
     /**
@@ -120,7 +120,7 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
                 unset($this->messages[$key]);
                 $this->emit('produce', $message);
             } catch (AMQPExchangeException $e) {
-                $this->emit('error', [$e]);
+                $this->emit('error', array($e));
             }
         }
     }
@@ -135,7 +135,7 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
      */
     public function __call($method, $args)
     {
-        return call_user_func_array([$this->exchange, $method], $args);
+        return call_user_func_array(array($this->exchange, $method), $args);
     }
 
     /**
@@ -147,7 +147,7 @@ class Producer extends EventEmitter implements Countable, IteratorAggregate
             return;
         }
 
-        $this->emit('end', [$this]);
+        $this->emit('end', array($this));
         $this->loop->cancelTimer($this->timer);
         $this->removeAllListeners();
         unset($this->exchange);

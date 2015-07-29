@@ -254,9 +254,9 @@ class ProducerTest extends PHPUnit_Framework_TestCase
     public static function IntervalSupplier()
     {
         return array(
-            [1],
-            [2.4],
-            [0.05]
+            array(1),
+            array(2.4),
+            array(0.05)
         );
     }
 
@@ -267,8 +267,8 @@ class ProducerTest extends PHPUnit_Framework_TestCase
     public static function MessageProvider()
     {
         return array(
-            ['foo', 'bar', 1 & 1, []],
-            ['bar', 'baz', 1 & 0, ['foo' => 'bar']]
+            array('foo', 'bar', 1 & 1, array()),
+            array('bar', 'baz', 1 & 0, array('foo' => 'bar'))
         );
     }
 
@@ -279,10 +279,10 @@ class ProducerTest extends PHPUnit_Framework_TestCase
     public static function MessagesProvider()
     {
         return array(
-            [[
-            ['foo', 'bar', 1 & 1, []],
-            ['bar', 'baz', 1 & 0, ['foo' => 'bar']]
-            ]]
+            array(array(
+                array('foo', 'bar', 1 & 1, array()),
+                array('bar', 'baz', 1 & 0, array('foo' => 'bar'))
+            ))
         );
     }
 
@@ -293,8 +293,8 @@ class ProducerTest extends PHPUnit_Framework_TestCase
     public static function CallProvider()
     {
         return array(
-            ['setName', 'foo'],
-            ['setType', 'bar']
+            array('setName', 'foo'),
+            array('setType', 'bar')
         );
     }
 }
