@@ -1,5 +1,5 @@
 {
-    "name": "ovimihai/react-amqp",
+    "name": "jcook/react-amqp",
     "description": "AMQP bindings for ReactPHP",
     "keywords": ["amqp", "rabbitmq"],
     "license": "MIT",
