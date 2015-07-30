@@ -1,5 +1,5 @@
 {
-    "name": "jcook/react-amqp",
+    "name": "ovimihai/react-amqp",
     "description": "AMQP bindings for ReactPHP",
     "keywords": ["amqp", "rabbitmq"],
     "license": "MIT",
@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.3.0",
         "ext-amqp": "*",
         "evenement/evenement": "1.0.*",
         "react/event-loop": "0.3.*"
