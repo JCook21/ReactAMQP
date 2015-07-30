@@ -75,7 +75,7 @@ class Consumer extends EventEmitter
         }
         $counter = 0;
         while ($envelope = $this->queue->get()) {
-            $this->emit('consume', [$envelope, $this->queue]);
+            $this->emit('consume', array($envelope, $this->queue));
             if ($this->max && ++$counter >= $this->max) {
                 return;
             }
@@ -92,7 +92,7 @@ class Consumer extends EventEmitter
      */
     public function __call($method, $args)
     {
-        return call_user_func_array([$this->queue, $method], $args);
+        return call_user_func_array(array($this->queue, $method), $args);
     }
 
     /**
@@ -104,7 +104,7 @@ class Consumer extends EventEmitter
             return;
         }
 
-        $this->emit('end', [$this]);
+        $this->emit('end', array($this));
         $this->loop->cancelTimer($this->timer);
         $this->removeAllListeners();
         unset($this->queue);

@@ -178,9 +178,9 @@ class ConsumerTest extends PHPUnit_Framework_TestCase
     public static function IntervalMaxSupplier()
     {
         return array(
-            [1, null],
-            [1, 1],
-            [0.05, 10],
+            array(1, null),
+            array(1, 1),
+            array(0.05, 10),
         );
     }
 
@@ -191,9 +191,9 @@ class ConsumerTest extends PHPUnit_Framework_TestCase
     public static function MaxSupplier()
     {
         return array(
-            [1],
-            [10],
-            [45]
+            array(1),
+            array(10),
+            array(45)
         );
     }
 
@@ -205,9 +205,9 @@ class ConsumerTest extends PHPUnit_Framework_TestCase
     public static function CallSupplier()
     {
         return array(
-            ['getArgument', 'foo'],
-            ['nack', 'bar'],
-            ['cancel', 'baz']
+            array('getArgument', 'foo'),
+            array('nack', 'bar'),
+            array('cancel', 'baz')
         );
     }
 }
